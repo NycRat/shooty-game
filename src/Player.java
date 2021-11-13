@@ -9,7 +9,7 @@ public class Player extends CollisionEntity {
 
     boolean alive = true;
     int hp = 10;
-    int bullets = (int)1e6;
+    int ammo = (int)1e6;
     static Asset playerSprite;
     final static double maxVelocity = 120000;
 
@@ -59,7 +59,5 @@ public class Player extends CollisionEntity {
     public void die () {
         alive = false;
     }
-
-    public int getBullets () { return bullets; }
 
 }

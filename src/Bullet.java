@@ -20,6 +20,9 @@ public class Bullet extends CollisionEntity {
     @Override
     public void update (double dt, ArrayList<Integer> kc) {
         setVel(new Vector2D(dt*140000, 0));        
+        if (getX() > Main.player.getX()+Main.width) {
+            setVisible(false);
+        }
     }
 
     @Override

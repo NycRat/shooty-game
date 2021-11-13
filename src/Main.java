@@ -7,16 +7,18 @@ import java.util.Random;
 
 public class Main extends KYscreen{
 
-    public static int score=0;
+    static int score=0;
     static int width = 0;
     static int height = 0;
-    public static Player player;
+    static Player player;
     static double trackTime=0;
-    static double enemySpawnTime = 1;
+    static double enemySpawnTime = 0.8;
     static AudioPlayer backgroundMusic;
+    static AudioPlayer sfx;
     static double lastShotTime=0;
     static int frames=0;
     static double trackSeconds=0;
+    UI ui;
 
     @Override
     public void start() {
@@ -25,14 +27,15 @@ public class Main extends KYscreen{
         // setDebugMode(true);
         backgroundMusic = new AudioPlayer("assets/backgroundMusic.wav");
         backgroundMusic.setLoop(true);
-        backgroundMusic.setVolume(-15);
+        backgroundMusic.setVolume(-5);
+
+        //sfx = new AudioPlayer("assets/shot.wav");
 
         player = new Player(new Vector2D(0,0), 88, 61);
         add(player);
 
-        add(new Enemy(new Vector2D(
-                    getCameraPos().getX()+width+width*0.4,
-                    getCameraPos().getY()+new Random().nextDouble(height+height*0.4)-height*0.2), 100, 100));
+        ui = new UI();
+        add(ui);
     }
 
     @Override
@@ -50,9 +53,12 @@ public class Main extends KYscreen{
         }
 
         if (trackSeconds>=1) {
-            System.out.println(frames);
             trackSeconds-=1;
+            ui.updateFpsCount(frames);
             frames=0;
+        }
+        if (!player.alive) {
+            ui.displayDefeat();
         }
         
         setCameraPos(new Vector2D(player.getX()-width/2+width*0.2, player.getY()-height/2));
@@ -64,10 +70,11 @@ public class Main extends KYscreen{
             System.exit(0);
 
         if (keyCode == KeyEvent.VK_SPACE) {
-            if (lastShotTime >= 0 && player.alive && player.bullets>0) {
-                player.bullets--;
+            if (lastShotTime >= 0.5 && player.alive && player.ammo>0) {
+                player.ammo--;
                 add(new Bullet(new Vector2D(player.getX()+40,player.getY()-15)));
                 lastShotTime = 0;
+                ui.updateAmmoCount(player.ammo);
             }
         }
     }
