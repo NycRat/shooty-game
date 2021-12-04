@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.math.*;
 
 import ky.Asset;
 import ky.CollisionEntity;
@@ -7,7 +8,7 @@ import ky.Vector2D;
 public class Enemy extends CollisionEntity {
 
     Asset enemySprite;
-    double movementSpeed=50000;
+    double movementSpeed=600;
 
     public Enemy(Vector2D position, int collisionBoxWidth, int collisionBoxHeight) {
         super(position, collisionBoxWidth, collisionBoxHeight, 2, "enemy");
@@ -22,23 +23,8 @@ public class Enemy extends CollisionEntity {
 
     @Override
     public void update (double dt, ArrayList<Integer> kc) {
-        moveX = Main.player.getX() - getX();
-        moveY = Main.player.getY() - getY();
-        if (Math.abs(moveX)>Math.abs(moveY)) {
-            moveY/=Math.abs(moveX);
-            moveX=((moveX>0) ? 1 : -1);
-        } else if (Math.abs(moveX)<Math.abs(moveY)) {
-            moveX/=Math.abs(moveY);
-            moveY=((moveY>0) ? 1 : -1);
-        }
-        setVel(new Vector2D(moveX*movementSpeed*dt, moveY*movementSpeed*dt));
-
-
-        /*
-        moveX = Main.player.getX()-getX();
-        moveY = (Main.player.getY()-getY()) * movementSpeed/moveX;
-        moveX=((moveX>0) ? 1 : -1) * movementSpeed;
-        setVel(moveX*dt, moveY*dt);*/
+        double angle = Math.atan2(Main.player.getX()-getX(), Main.player.getY()-getY());
+        setVel(new Vector2D(Math.sin(angle)*movementSpeed, Math.cos(angle) * movementSpeed));
     }
 
     @Override
