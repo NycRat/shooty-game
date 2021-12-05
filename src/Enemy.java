@@ -23,8 +23,8 @@ public class Enemy extends CollisionEntity {
 
     @Override
     public void update (double dt, ArrayList<Integer> kc) {
-        double angle = Math.atan2(Main.player.getX()-getX(), Main.player.getY()-getY());
-        setVel(new Vector2D(Math.sin(angle)*movementSpeed, Math.cos(angle) * movementSpeed));
+        double angle = Math.atan2(Main.player.getY()-getY(), Main.player.getX()-getX());
+        setVel(new Vector2D(Math.cos(angle)*movementSpeed, Math.sin(angle) * movementSpeed));
     }
 
     @Override
